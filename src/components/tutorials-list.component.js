@@ -37,6 +37,8 @@ export default class TutorialsList extends Component {
         id: id,
         title: data.title,
         description: data.description,
+        cuisine: data.cuisine,
+        borough: data.borough,
         published: data.published,
       });
     });
