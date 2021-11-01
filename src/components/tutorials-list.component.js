@@ -9,11 +9,14 @@ export default class TutorialsList extends Component {
     this.refreshList = this.refreshList.bind(this);
     this.setActiveTutorial = this.setActiveTutorial.bind(this);
     this.onDataChange = this.onDataChange.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
 
     this.state = {
+      mainTutorial: [],
       tutorials: [],
       currentTutorial: null,
       currentIndex: -1,
+      search: "",
     };
 
     this.unsubscribe = undefined;
@@ -33,6 +36,8 @@ export default class TutorialsList extends Component {
     items.forEach((item) => {
       let id = item.id;
       let data = item.data();
+      if (data.title){
+      }
       tutorials.push({
         id: id,
         title: data.title,
@@ -42,10 +47,38 @@ export default class TutorialsList extends Component {
         published: data.published,
       });
     });
-
     this.setState({
       tutorials: tutorials,
+      mainTutorial : tutorials
     });
+  }
+  onSearchChange(search) {
+    this.setState({
+      search: search.title,
+    });
+    let newtutorials = [];
+    console.log(search.title);
+    this.state.mainTutorial.forEach((tutorial)=>{
+      let id = tutorial.id;
+      //let data = tutorial.data;
+      let search = document.getElementById('Search').value
+      if (tutorial.title.includes(search)){
+        newtutorials.push({
+          id: id,
+          title: tutorial.title,
+          description: tutorial.description,
+          cuisine: tutorial.cuisine,
+          borough: tutorial.borough,
+          published: tutorial.published,
+        });
+      }
+    });
+    //document.write(newtutorials.title);
+    this.setState({
+      tutorials: newtutorials,
+    });
+    this.refreshList();
+    
   }
 
   refreshList() {
@@ -69,6 +102,16 @@ export default class TutorialsList extends Component {
       <div className="list row">
         <div className="col-md-6">
           <h4>Restaurants List</h4>
+          <div className="form-group">
+                <label htmlFor="Search">Search</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="Search"
+                  value={this.state.search}
+                  onChange={this.onSearchChange}
+                />
+              </div>
 
           <ul className="list-group">
             {tutorials &&
@@ -86,6 +129,8 @@ export default class TutorialsList extends Component {
               ))}
           </ul>
         </div>
+
+
         <div className="col-md-6">
           {currentTutorial ? (
             <Tutorial
