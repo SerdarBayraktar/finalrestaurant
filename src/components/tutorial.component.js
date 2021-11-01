@@ -173,8 +173,8 @@ export default class Tutorial extends Component {
                   type="text"
                   className="form-control"
                   id="cuisine"
-                  value={currentTutorial.description}
-                  onChange={this.onChangeDescription}
+                  value={currentTutorial.cuisine}
+                  onChange={this.onChangeCuisine}
                 />
               </div>
               <div className="form-group">
